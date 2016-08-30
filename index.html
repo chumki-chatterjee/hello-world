@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Quad LTD Tool</title>
+<link href="css/style.css" type="text/css" rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/custome.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="js/jquery.jsPlumb-1.3.16-all-min.js"></script>
+<script type="text/javascript" src="js/quad.js"></script>
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none !important;
+    }
+  </style>
+<![endif]-->
+</head>
+
+<body>    
+    <div class="header_container">
+        <div class="header_top_bar gradient">
+            <button class="right gradient">Continue</button>
+            <span class="button_devider right"></span>
+            <button class="right gradient">Cancel</button>
+            <h1 class="heading_text">Quick Jump</h1>
+            <div class="clear"></div>
+        </div>
+        <div class="button_bar sprite" id="second_bttn_bar" style="display:none;">
+            <button class="right gradient inactive" id="bttn_preview">Preview</button>
+            <button class="right gradient inactive" id="bttn_save">Save</button>
+            <button class="left gradient" id="bttn_pin">Add Pins</button>
+            <button class="left gradient" id="bttn_distractor">Add Distractor</button>
+            
+            <form name="frm_dbl" id="frm_dbl" method="post" >
+                <div class="bar_label left">Double Line Tile</div>
+                <div class="double_line_box left sprite" id="double_line"></div>
+                <input type="hidden" name="type" value="save_dbl_line" />
+                <input type="hidden" name="jsonDblLine" id="jsonDblLine" value="" />
+            </form>
+            
+            <div id="saved_msg" class="saved_msg" style="display:none;">All pin positions are saved successfully!</div>
+            <div class="clear"></div>
+        </div>
+        <div class="button_bar sprite" id="first_bttn_bar">            
+            <button class="left gradient" id="bttn_upload">Upload Image</button>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="body_container">
+    	<div class="body_container_inner_image" id="body_container_inner_image" style="display:none;">
+        	<div class="body_img_cont" id="body_img_cont" >            	
+                </div>
+        	<!-- drag container starts here -->
+            <div class="drag_container" id="drag_container">            	
+                <div class="clear"></div>
+            </div>
+            <!-- drag container ends here -->
+        </div>
+        <div class="clear"></div>
+        
+        <!----- Add Pins popup------->
+        <div class="form_container" id="popup_pins" style="display:none;">
+        <form name="frm_pin" id="frm_pin" method="post" enctype="multipart/form-data">
+            <div class="popup_header_cont">
+            <div class="popup_close right sprite" id="close_pin_frm"></div>
+                <div class="form_heading">ADD PINS</div>
+            </div>
+        	
+            <div class="form_content_cont">
+            	<div class="form_row">
+                    <input type="text" value="Label" name="title" id="title" />
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Correct Feedback</div>                    
+                    <textarea name="correct_feedback" id="correct_feedback" class="txtarea"></textarea>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Incorrect Feedback</br>
+                        <span>(Use double brackets for separate feedback, E.g. "((Samuel))((samuel))((Samual))") </span>
+                    </div>                    
+                    <textarea name="incorrect_feedback" id="incorrect_feedback" class="txtarea"></textarea>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Tile Audio</div>
+                    <div class="radio_button left sprite" id="audio_file1"></div>
+                    <div class="radio_label left">Yes</div>
+                    <div class="radio_button left sprite active" id="audio_file2"></div>
+                    <div class="radio_label left">No</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row_audio" id="audio_file_row" style="display:none;">
+                	<input type="file" name="pin_audio_file" id="pin_audio_file" />                        
+                	<div class="clear"></div>
+                </div>
+                <div class="form_row_speaker" id="play_audio_row_pin" style="visibility:hidden;">
+                	<div class="speaker_butt_wrap sprite left">
+                            <div class="player">
+                            <a href="javascript:void(0);" class="jp-play"><button class="left icon_button gradient sprite speaker_icon" type="button"></button></a>
+                            <a href="javascript:void(0);" class="jp-pause"><button class="left icon_button gradient sprite speaker_icon mute" type="button"></button></a>
+                            </div>
+                            <div id="audio_div"></div>
+                        </div>
+                	<div class="clear"></div>
+                </div>
+                <div class="form_row" id="color_row" style="display:none;">
+                    <div class="form_label left">Line Color</div>
+                    <div class="color_box sprite left color_1" id="color1"></div>
+                    <div class="color_box sprite left color_2" id="color2"></div>
+                    <div class="color_box sprite left color_3" id="color3"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Display Leader Line</div>
+                    <div class="lead_line_box left sprite" id="display_line"></div>
+                    <div class="clear"></div>
+                </div>
+            	<div class="clear"></div>
+                
+            </div>
+            <div class="popup_footer">
+            	<button class="right" id="bttn_cancel_pin" type="button" >Cancel</button>
+                <button class="right active" id="bttn_save_pin" type="button" >Save</button>
+                <input type="hidden" name="hotspot_id" id="hotspot_id" value="">
+                <input type="hidden" id="hotspot_pos" value="">
+                <input type="hidden" id="hotspot_boxpos" value="">
+                <input type="hidden" id="hotspot_key" value="">
+                <input type="hidden" name="type" value="upload_pin">
+                <input type="hidden" name="pin_file_name" id="pin_file_name" value="">
+                <input type="hidden" name="pin_audio" id="pin_audio" value="">
+                <input type="hidden" name="jsonValue" id="jsonValue" value="">
+                <div class="clear"></div>
+            </div>
+        </form>
+        </div>
+        
+        <!----- Add Distractor popup------->
+        <div class="form_container" id="popup_distractor" style="display:none;">
+        <form name="frm_distractor" id="frm_distractor" method="post" enctype="multipart/form-data">
+            <div class="popup_header_cont">
+            <div class="popup_close right sprite" id="close_distractor_frm"></div>
+                <div class="form_heading">ADD DISTRACTOR</div>
+            </div>
+        	
+            <div class="form_content_cont">
+            	<div class="form_row">
+                    <input type="text" value="Label" name="title_distractor" id="title_distractor" />
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Feedback</div>                    
+                    <textarea name="feedback" id="feedback" class="txtarea"></textarea>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row">
+                    <div class="form_label left">Tile Audio</div>
+                    <div class="radio_button left sprite" id="audio_file3"></div>
+                    <div class="radio_label left">Yes</div>
+                    <div class="radio_button left sprite active" id="audio_file4"></div>
+                    <div class="radio_label left">No</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form_row" id="audio_file_row_distractor" style="display:none;">
+                	<input type="file" name="distractor_audio_file" id="distractor_audio_file" />
+                	<div class="clear"></div>
+                </div>
+                <div class="form_row" id="play_audio_row_distractor" style="display:none;">
+                	<div class="speaker_butt_wrap sprite left">
+                            <div class="player">
+                            <a href="javascript:void(0);" class="jp-play"><button class="left icon_button gradient sprite speaker_icon" type="button"></button></a>
+                            <a href="javascript:void(0);" class="jp-pause"><button class="left icon_button gradient sprite speaker_icon mute" type="button"></button></a>
+                            </div>
+                            <div id="audio_div_dist"></div>
+                        </div>
+                	<div class="clear"></div>
+                </div>
+            	<div class="clear"></div>                
+            </div>
+            <div class="popup_footer">
+            	<button class="right" id="bttn_cancel_distractor" type="button" >Cancel</button>
+                <button class="right active" id="bttn_save_distractor" type="button" >Save</button>                
+                <input type="hidden" name="distractor_id" id="distractor_id" value="">                
+                <input type="hidden" id="distractor_key" value="">
+                <input type="hidden" name="type" value="upload_distractor">
+                <input type="hidden" name="distractor_file_name" id="distractor_file_name" value="">
+                <input type="hidden" name="distractor_audio" id="distractor_audio" value="">
+                <input type="hidden" name="jsonValue_distractor" id="jsonValue_distractor" value="">
+                <div class="clear"></div>
+            </div>
+        </form>
+        </div>
+        
+        <!----- Upload Image popup------->
+        <div class="form_container" id="popup-box" style="display:none;">
+         <form name="frm_img" id="frm_img" method="post" action="quad.php" enctype="multipart/form-data">
+        	<div class="popup_header_cont">
+            	<div class="popup_close right sprite" id="close_upload_frm"></div>
+        		<div class="form_heading">Image Upload</div>
+            </div>
+        	
+            <div class="form_content_cont">
+            	<div class="form_row">
+                    <input type="file" name="image" id="image" />
+                    <input type="hidden" name="type" value="upload_image">
+                    <div class="clear"></div>
+                </div>                
+            	<div class="clear"></div>
+                
+            </div>
+            <div class="popup_footer">
+            	<button class="right" id="frm_bttn_cancel" type="button">Cancel</button>
+                <button class="right active" id="frm_bttn_upload" type="button">Upload</button>
+                <div class="clear"></div>
+            </div>
+         </form>
+        </div>
+        
+        <!-------------------------------------------->
+        
+            <div class="body_container_inner_image" id="body_container_inner_image_preview" style="display:none;">
+                <div class="header_label">LABEL THE DIAGRAM TOOL</div>
+                <div class="popup_close right sprite" id="close_preview" style="top:2px;right:5px;"></div>
+        	<div class="body_img_cont" id="body_img_cont_preview" >            	
+                </div>
+        	<!-- drag container starts here -->
+            <div class="drag_container" id="drag_container_preview">            	
+                <div class="clear"></div>
+            </div>
+            <!-- drag container ends here -->
+            </div>
+        
+        <!----------------- ALERT BOX --------------------------->
+        <div class="alert_box" id="alert_box" style="display:none;">
+            <div class="form_content_cont"></div>            
+            <div class="popup_footer">
+                <button class="right active" id="bttn_ok" type="button">OK</button>
+                <div class="clear"></div>
+            </div>
+        </div>
+        
+    </div>    
+    <script>
+        init({"question_text":"ques1<br/>","question_title":"ques1","instruction_text":"ques1<br/>","image":"___ASSETINFO{'asset_id':'83','inst_id':'26','asset_name':'media5165390bd41a3.jpg','asset_type':'image','asset_other':''}___<br/>","correct_feedback":"","incorrect_feedback":"","parcorrect_feedback":"","hint":"","notes_editor":"","metadata":[{"text":"Score","val":"1"},{"text":"Difficulty","val":"easy"}],"appLevel":{"label":"1","Image":"upload/images-4.jpg","double_line":"0","hot_spot_details":{"hot_spot":[{"-id":1,"-position":"10,10","box_position":"50,50","label":"label1","is_tile_audio":"1","audio_filename":"","line_color":"Black","display_line":"1"}]},"distractor_details":""},"choices":[{"val1":"1","val2":"label1","val3":1,"val4":"10,10","val5":"50,50"},""]});        
+    </script>
+</body>
+</html>
